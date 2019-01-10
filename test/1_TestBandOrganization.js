@@ -16,22 +16,24 @@ function get_id(player_docs, player_name)
 	}
 	return null;
 }
-describe('Test Band Organization', function(){  
- 	let db_artists="Test_Artist_DB";
+describe('Test Band Organization', function(){
+ 	let db_artists="Test_Artists_DB";
 	let tbv_artists="artists";
 	let tbv_bands="bands";
-	let tbe_artist2band="artist2band"; 
-    let db_url = 'mongodb://localhost:27017'; 
+	let tbe_artist2band="artist2band";
+
+  let db_url = 'mongodb://localhost:27017'; 
 
 	var _artists=[];
-	it('Delete a artist DBs  ', async() => { 
+
+	it('Delete a artists DB  ', async() => { 
 		try{
 			let client = await MongoClient.connect(db_url, { useNewUrlParser: true});
 			let gdb = new MG.Graph(client, {print_out:true});
 			gdb.begin_profiling("Main"); 
 				await gdb.clearDB(db_artists);
-		    	await client.close();  
-		    	//assert(0);
+	    	await client.close();  
+	    	//assert(0);
 			gdb.end_profiling();   
 		}
 		catch(err){
@@ -39,14 +41,12 @@ describe('Test Band Organization', function(){
 			assert(0);
 		} 
 		finally{
-
 		}
 	});
 
-    let KJDBMngr = new KJDB.DBManager(db_url, "", "", "");
+  let KJDBMngr = new KJDB.DBManager(db_url, "", "", "");
  	
-
- 	it('Open Tennis DB Connection" ', async() => {  
+ 	it('Open DB Connection" ', async() => {  
 		//let KJDBMngr = new KJDB.DBManager(db_url, db_artists, tbv_artists, tbe_artists2matches);
 	 	try{  
 	 		let b_result = await KJDBMngr.open_DB_connection();
@@ -56,7 +56,7 @@ describe('Test Band Organization', function(){
 	 		console.log(err); 
 	 		assert(0);
 	 	}  
-	 });  
+	});  
 
  	it('Create an artist table ', async() => { 
 		try{ 
@@ -74,7 +74,6 @@ describe('Test Band Organization', function(){
 			assert(0);
 		}
 	}); 
- 
 
 
 	it('Create a band ', async() => {  
@@ -92,7 +91,7 @@ describe('Test Band Organization', function(){
 	 		console.log(err); 
 	 		assert(0);
 	 	}  
-	 }); 
+	}); 
 
     it('Search a band ', async() => {  
 		//let KJDBMngr = new KJDB.DBManager(db_url, db_artists, tbv_artists, tbe_artists2matches);
@@ -110,9 +109,7 @@ describe('Test Band Organization', function(){
 	 		console.log(err); 
 	 		assert(0);
 	 	}  
-	 }); 
-
-	 
+	}); 
 
 	  
   /*  console.log("Year \tTournament      \tWinner         \tRunner-up             \tScore"); 
@@ -362,7 +359,7 @@ describe('Test Band Organization', function(){
 			assert(0);
 		}  
 	}); */
-	it('Close Tennis DB Connection" ', async() => {  
+	it('Close DB Connection" ', async() => {  
 		//let KJDBMngr = new KJDB.DBManager(db_url, db_artists, tbv_artists, tbe_artists2matches);
 	 	try{  
 	 		let b_result = await KJDBMngr.close_DB_connection();
