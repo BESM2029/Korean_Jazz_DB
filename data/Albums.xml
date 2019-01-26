@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<albums>
-<album titles='{"en":"Nostalgia","kr":"향수"}' release="2015.00.00" main_instruments="Acousticology" executive_producer="이재진" producers="이재진;조영덕{band:Acousticology};김대호{band:Acousticology};권성민"
+<album titles="en:Nostalgia;kr:향수" release="2015.00.00" main_instruments="Acousticology" executive_producer="이재진" producers="이재진;조영덕{band:Acousticology};김대호{band:Acousticology};권성민"
 	mixing="이재진{group:TakeOne Music Studio}" recording="최승희{group:TakeOne Music Studio}" mastering="전훈{group:Sonic Korea}" photo="Alex Ham" design="조유림" studio_manager="김명기">
 	<disk number="01">
-		<tune track="01" titles="en:Nostalgia;kr:향수" time="00.04.04" composer='"조영덕":{"band":"Acousticology"}' instruments="guitar:조영덕{band:Acousticology};bass:김대호{band:Acousticology}"/>
+		<tune track="01" titles="en:Nostalgia;kr:향수" time="00.04.04" composer="조영덕{band:Acousticology}" instruments="guitar:조영덕{band:Acousticology};bass:김대호{band:Acousticology}"/>
 		<tune track="02" titles="Foggy day;kr:안개" time="00.05.10" composer="조영덕{band:Acousticology}" instruments="guitar:조영덕{band:Acousticology};bass:김대호{band:Acousticology}"/>
 		<tune track="03" titles="Blow in the wind;kr:바람언덕" time="00.06.16" composer="조영덕{band:Acousticology}" instruments="guitar:조영덕{band:Acousticology};bass:김대호{band:Acousticology}"/>
 		<tune track="04" titles="Tunnel;kr:터널" time="00.06.15" composer="조영덕{band:Acousticology}" instruments="guitar:조영덕{band:Acousticology};bass:김대호{band:Acousticology}"/>
@@ -52,5 +50,17 @@
 		<tune track="11" titles="NGC 3618" time="00.00.00" instruments="guitar:Jun Kim;bass:Changhyun Kim;drums:Sunki Kim"/>
 		<tune track="12" titles="Milky Way" time="00.00.00" instruments="guitar:Jun Kim;bass:Changhyun Kim;drums:Sunki Kim"/>
 	</disk>
-</album> 
-</albums>
+</album>
+<album titles="JAZZ: 째즈로 들어본 우리민요 가요 팝송!" release="1979.00.00" executive_producer="{en:Eom Jin;kr:엄진}" producers="{en:Lee Pan-geun;kr:이판근}" arrangement="{en:Lee Pan-geun;kr:이판근}" design="{en:Eom Jin;kr:엄진}">
+	<disk number="01">
+		<tune track="01" titles="{en:Arirang(Traditional);kr:아리랑(구전민요)" time="00.10.17" instruments="trumpet:{en:Kang Dae-gwan;kr:강대관};tenor saxophone:{en:Kim Su-yeol;kr:김수열};soprano saxophone:{en:Kim Su-yeol;kr:김수열};piano:{en:Son Soo-kil;kr:손수길};bass:{en:Lee Soo-young;kr:이수영};drums{en:Choi Se-jin;kr:쵀세진};bongo{en:Choi Se-jin;kr:쵀세진}"/>
+		<tune track="02" titles="{en:Bin Ba-Da (Eom Jin) KOMCA;kr:빈바다}" time="00.05.38" composer="{en:Eom Jin;kr:엄진}" instruments="trumpet:{en:Kang Dae-gwan;kr:강대관};tenor saxophone:{en:Kim Su-yeol;kr:김수열};soprano saxophone:{en:Kim Su-yeol;kr:김수열};piano:{en:Son Soo-kil;kr:손수길};bass:{en:Lee Soo-young;kr:이수영};drums{en:Choi Se-jin;kr:쵀세진};bongo{en:Choi Se-jin;kr:쵀세진}"/>
+		<tune track="03" titles="{en:Bi-Nae-ri-neun Bam-e [Rainy Night in Gerogia] (Tony Joe White) BMI;kr:비내리는 밤에}" time="00.05.00" composer="B.B.KING" instruments="trumpet:{en:Kang Dae-gwan;kr:강대관};tenor saxophone:{en:Kim Su-yeol;kr:김수열};soprano saxophone:{en:Kim Su-yeol;kr:김수열};piano:{en:Son Soo-kil;kr:손수길};bass:{en:Lee Soo-young;kr:이수영};drums{en:Choi Se-jin;kr:쵀세진};bongo{en:Choi Se-jin;kr:쵀세진}"/>
+		<tune track="04" titles="{en:Hae Mal-geun A-chim [Softly, as in a Morning Sunrise] (Sigmund Romberg and Oscar Hammerstein II) ASCAP;kr:해맑은 아침" time="00.02.50" composer="{kr:빅터영}" instruments="trumpet:{en:Kang Dae-gwan;kr:강대관};tenor saxophone:{en:Kim Su-yeol;kr:김수열};soprano saxophone:{en:Kim Su-yeol;kr:김수열};piano:{en:Son Soo-kil;kr:손수길};bass:{en:Lee Soo-young;kr:이수영};drums{en:Choi Se-jin;kr:쵀세진};bongo{en:Choi Se-jin;kr:쵀세진}"/>
+	</disk>
+	<disk number="02">
+		<tune track="01" titles="{en:Gasiri (Eom Jin) Copyright control;kr:가시리}" time="00.06.11" composer="{en:Eom Jin;kr:엄진}" instruments="trumpet:{en:Kang Dae-gwan;kr:강대관};tenor saxophone:{en:Kim Su-yeol;kr:김수열};soprano saxophone:{en:Kim Su-yeol;kr:김수열};piano:{en:Son Soo-kil;kr:손수길};bass:{en:Lee Soo-young;kr:이수영};drums{en:Choi Se-jin;kr:쵀세진};bongo{en:Choi Se-jin;kr:쵀세진}"/>
+		<tune track="02" titles="{en:Han-o-back-nyun (Traditional);kr:한오백년 (구전민요)}" time ="00.06.58" instruments="trumpet:{en:Kang Dae-gwan;kr:강대관};tenor saxophone:{en:Kim Su-yeol;kr:김수열};soprano saxophone:{en:Kim Su-yeol;kr:김수열};piano:{en:Son Soo-kil;kr:손수길};bass:{en:Lee Soo-young;kr:이수영};drums{en:Choi Se-jin;kr:쵀세진};bongo{en:Choi Se-jin;kr:쵀세진}"/>
+		<tune track="03" titles="{en:Na-ee Mo-den-geot [My Favorite Things] (Richard Rodges and Oscar Hammerstein II) ASCAP;kr:나의 모든 것}" composer="{kr:번슈타인}" time="00.08.39" instruments="trumpet:{en:Kang Dae-gwan;kr:강대관};tenor saxophone:{en:Kim Su-yeol;kr:김수열};soprano saxophone:{en:Kim Su-yeol;kr:김수열};piano:{en:Son Soo-kil;kr:손수길};bass:{en:Lee Soo-young;kr:이수영};drums{en:Choi Se-jin;kr:쵀세진};bongo{en:Choi Se-jin;kr:쵀세진}"/>
+	</disk>
+</album>
