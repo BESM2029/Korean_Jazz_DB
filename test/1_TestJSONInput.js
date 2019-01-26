@@ -74,7 +74,7 @@ describe('Test DB from JSON Data ', function(){
  	it('Create an album', async() => { 
 		try{  
 			let album = JSON_data[0];
-			if(album.group)
+			if(album.group) // group 
 			{
 				for(let ii in album.group)
 				{
