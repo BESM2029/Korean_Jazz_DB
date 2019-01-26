@@ -1,4 +1,4 @@
-let JSONdata = [
+let JSON_Albums = [
 
 { // stare of album
     titles: {en: "Nostalgia", kr: "향수"},
@@ -225,6 +225,12 @@ disks:[
 }// end of album
 ];
 
-let jsonStr = JSON.stringify(JSONdata);
+if (typeof window === 'undefined') {
+    if (require.main === module) {// runing this file using node.js  
+        let jsonStr = JSON.stringify(JSON_Albums);
+        console.log(jsonStr);
+    }
+}
 
-console.log(jsonStr);
+if (typeof module != 'undefined') // node 
+    module.exports = JSON_Albums; //  
