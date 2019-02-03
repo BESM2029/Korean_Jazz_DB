@@ -31,7 +31,7 @@ describe('Test DB from JSON Data ', function(){
 	let tbv_artists="artists";
 	let tbv_bands="bands";
 	let tbe_artist2band="artist2band";
-  let db_musics = "Test_Musics_DB";
+  let db_musics = "Test_JSON_Musics_DB";
   let tbv_musics="musics";
   let tbv_albums="albums";
   let tbe_music2album="music2album";
@@ -185,7 +185,7 @@ async function create_a_disk (disk) {
 				let musicsArray2D=[];
 				for (let di in album.disks) {
 					let disk = album.disks[di];
-					let tune_id_array = await create_a_disk (disk);
+					let tune_id_array = await create_a_disk(disk);
 					musicsArray2D.push(tune_id_array);
 				}
 	      let Album = {title: album.title, release_date: album.release_date };

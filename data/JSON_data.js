@@ -108,10 +108,11 @@ let JSON_Albums = [
     design: [{en: "Jun Kim"}],
 
     group: [
-        {name: "TA:", members:[{en: "Seungkyun Chae"}, {en: "Sungmin Han"}, {en: "Heungkook Ha"}]}
+        {name: {en: "TAL:"}, members:[{en: "Seungkyun Chae"}, {en: "Sungmin Han"}, {en: "Heungkook Ha"}]}
     ],
 
     disks: [
+        [
         {track: "01", title: {en: "M1"}, time: "00.00.00", instruments: {guitar: [{en: "Jun Kim"}], bass: [{en: "Changhyun Kim"}], drums: [{en: "Sunki Kim"}]}},
         {track: "02", title: {en: "Centaurus A"}, time: "00.00.00", instruments: {guitar: [{en: "Jun Kim"}], bass: [{en: "Changhyun Kim"}], drums: [{en: "Sunki Kim"}]}},
         {track: "03", title: {en: "NGC 1512"}, time: "00.00.00", instruments: {guitar: [{en: "Jun Kim"}], bass: [{en: "Changhyun Kim"}], drums: [{en: "Sunki Kim"}]}},
@@ -127,6 +128,7 @@ let JSON_Albums = [
         {track: "10", title: {en: "NGC 7814"}, time: "00.00.00", instruments: {guitar: [{en: "Jun Kim"}], bass: [{en: "Changhyun Kim"}], drums: [{en: "Sunki Kim"}]}},
         {track: "11", title: {en: "NGC 3618"}, time: "00.00.00", instruments: {guitar: [{en: "Jun Kim"}], bass: [{en: "Changhyun Kim"}], drums: [{en: "Sunki Kim"}]}},
         {track: "12", title: {en: "Milky Way"}, time: "00.00.00", instruments: {guitar: [{en: "Jun Kim"}], bass: [{en: "Changhyun Kim"}], drums: [{en: "Sunki Kim"}]}},
+        ]
     ]
 }, // end of album
 
