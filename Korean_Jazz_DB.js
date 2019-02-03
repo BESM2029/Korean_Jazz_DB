@@ -157,11 +157,14 @@ KJDB.DBManager = function(db_url, db_member_name, table_member_name, table_playe
                _dst:{db:db_name, table:band_table_name, _id: bandID}}; // put role, start/end time later 
               edges.push(BandMemberEdge);
           }      
+          let result_total = [inserted_band];
+          if (edges.length > 0) {
             let results = await this.gdb.insertEdge(db_name, artist_band_edge_table_name, edges) ;
             if (results.ops.length != edges.length)
                 throw "ERROR insertEdge (DB="+db_name+", table="+artist_band_edge_table_name+")";
-            let result_total = [inserted_band].concat(results.ops);
-            //await this.client.close();  
+            result_total = [inserted_band].concat(results.ops);
+          }
+          //await this.client.close();  
         this.gdb.end_profiling();
         return result_total;
       }
