@@ -122,6 +122,7 @@ KJDB.DBManager = function(db_url, db_member_name, table_member_name, table_playe
     try{
       //let this.gdb = new MG.Graph(this.client,{print_out:true});
       this.gdb.begin_profiling("insert_artists");
+      console.log(JSON.stringify(artistArray));
         await this.gdb.insert(db_name, artist_table_name, artistArray);   
         //await this.client.close();  
       this.gdb.end_profiling();

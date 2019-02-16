@@ -4,12 +4,28 @@
 		"selected_items":
 		[
 			[
-				"J",
-				"JSON_data"
+				"mi",
+				"missing_members"
+			],
+			[
+				"alb",
+				"albumS"
+			],
+			[
+				"album_",
+				"album_doc"
 			],
 			[
 				"tun",
-				"tune_ids"
+				"tune"
+			],
+			[
+				"cont",
+				"contributions"
+			],
+			[
+				"J",
+				"JSON_data"
 			],
 			[
 				"tu",
@@ -18,10 +34,6 @@
 			[
 				"di",
 				"disk"
-			],
-			[
-				"mi",
-				"missing"
 			],
 			[
 				"crea",
@@ -66,10 +78,6 @@
 			[
 				"art",
 				"tbe_artists2music"
-			],
-			[
-				"cont",
-				"contributionsStringArray"
 			],
 			[
 				"find",
@@ -344,10 +352,19 @@
 	"buffers":
 	[
 		{
-			"file": "test/1_TestJSONInput.js",
+			"file": "test/2_testGetData.js",
 			"settings":
 			{
-				"buffer_size": 7511,
+				"buffer_size": 4565,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "test/1_TestJSONInput.js_de",
+			"settings":
+			{
+				"buffer_size": 9539,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -356,24 +373,8 @@
 			"file": "package.json",
 			"settings":
 			{
-				"buffer_size": 474,
+				"buffer_size": 472,
 				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "test/2_TestAlbum.js_backup",
-			"settings":
-			{
-				"buffer_size": 3809,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "test/1_TestBandOrganization.js_backup",
-			"settings":
-			{
-				"buffer_size": 16647,
 				"line_ending": "Windows"
 			}
 		},
@@ -381,16 +382,34 @@
 			"file": "Korean_Jazz_DB.js",
 			"settings":
 			{
-				"buffer_size": 9084,
+				"buffer_size": 9132,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "node_modules/@mhhwang2002/mongograph/MongoGraph.js",
+			"settings":
+			{
+				"buffer_size": 15746,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "test.txt",
+			"settings":
+			{
+				"buffer_size": 287630,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "data/JSON_data.js",
 			"settings":
 			{
-				"buffer_size": 13490,
+				"buffer_size": 14674,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -434,14 +453,18 @@
 	[
 		"/D/Programs/Project/Korean_Jazz_DB",
 		"/D/Programs/Project/Korean_Jazz_DB/data",
-		"/D/Programs/Project/Korean_Jazz_DB/test"
+		"/D/Programs/Project/Korean_Jazz_DB/test",
+		"/D/Programs/Project/Korean_Jazz_DB/test_backup"
 	],
 	"file_history":
 	[
+		"/D/Programs/Project/Korean_Jazz_DB/data/JSON_data.js",
+		"/D/Programs/Project/Korean_Jazz_DB/test/1_TestBandOrganization.js_backup",
+		"/D/Programs/Project/Korean_Jazz_DB/test/2_TestAlbum.js_backup",
+		"/D/Programs/Project/Korean_Jazz_DB/package.json",
 		"/D/Programs/Project/Korean_Jazz_DB/test/3_TestMusic2Artist.js_backup",
 		"/D/Programs/Project/Korean_Jazz_DB/.gitignore",
 		"/D/Programs/Project/Korean_Jazz_DB/Korean_Jazz_DB.sublime-project",
-		"/D/Programs/Project/Korean_Jazz_DB/data/JSON_data.js",
 		"/D/Programs/Project/Korean_Jazz_DB/test/1_TestXMLDataInput.js",
 		"/D/Programs/Project/Korean_Jazz_DB/node_modules/agraph/AGraph.js",
 		"/D/Programs/Project/Korean_Jazz_DB/node_modules/@mhhwang2002/mongograph/MongoGraph.js",
@@ -454,7 +477,6 @@
 		"/D/Programs/Project/Korean_Jazz_DB/test/2_TestAlbum.js",
 		"/D/Programs/Study/XML_handling/4Album.xml",
 		"/D/Programs/Study/XML_handling/Nostalgia.xml",
-		"/D/Programs/Project/Korean_Jazz_DB/package.json",
 		"/D/Programs/Sample/TennisMatches/node_modules/mongodb/lib/db.js",
 		"/D/Programs/Sample/TennisMatches/TennisMatchServer.js",
 		"/D/Programs/Project/Account_Manager/view/v_reset_phase_2.html",
@@ -563,9 +585,7 @@
 		"/D/Programs/Animator2D/index.html",
 		"/D/Programs/Animator2D/view/v_panning.js",
 		"/D/Programs/Animator2D/view/v_zooming.js",
-		"/D/Programs/Animator2D/node_modules/agraph/examples/usingAGraph.html",
-		"/D/Programs/Animator2D/node_modules/agraph/AGraph.js",
-		"/D/Programs/Animator2D/package.json"
+		"/D/Programs/Animator2D/node_modules/agraph/examples/usingAGraph.html"
 	],
 	"find":
 	{
@@ -585,6 +605,20 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"clearDB",
+			"error",
+			"Close DB Connection",
+			"Open DB Connection",
+			"error",
+			"mongoerror",
+			"insert_artists",
+			"MongoError",
+			"create_album_contributions",
+			"edge_table_list",
+			"KJDBMngr",
+			"instruments",
+			"insertEdge",
+			"create_a_band",
 			"release",
 			"get_querry_object",
 			"title",
@@ -606,6 +640,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"contributions",
 			"release_date",
 			"title",
 			"album_group",
@@ -632,19 +667,47 @@
 			[
 				{
 					"buffer": 0,
-					"file": "test/1_TestJSONInput.js",
+					"file": "test/2_testGetData.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7511,
+						"buffer_size": 4565,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6577,
-								6577
+								4136,
+								4136
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 945.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "test/1_TestJSONInput.js_de",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9539,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3775,
+								3784
 							]
 						],
 						"settings":
@@ -653,27 +716,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2537.0,
+						"translation.y": 939.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
+					"buffer": 2,
 					"file": "package.json",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 474,
+						"buffer_size": 472,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								139,
-								144
+								215,
+								215
 							]
 						],
 						"settings":
@@ -686,83 +749,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "test/2_TestAlbum.js_backup",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3809,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2220,
-								2825
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1040.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "test/1_TestBandOrganization.js_backup",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 16647,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1142,
-								740
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 96.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "Korean_Jazz_DB.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9084,
+						"buffer_size": 9132,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7345,
-								7345
+								3558,
+								3572
 							]
 						],
 						"settings":
@@ -772,10 +776,67 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2640.0,
+						"translation.y": 1434.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "node_modules/@mhhwang2002/mongograph/MongoGraph.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15746,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1486,
+								1486
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 136.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "test.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 287630,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								46965,
+								46967
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 11917.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -785,20 +846,20 @@
 			"sheets":
 			[
 				{
-					"buffer": 5,
+					"buffer": 6,
 					"file": "data/JSON_data.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13490,
+						"buffer_size": 14674,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9162,
-								9162
+								80,
+								80
 							]
 						],
 						"settings":
@@ -808,10 +869,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1584.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 6,
 					"type": "text"
 				}
 			]
@@ -819,7 +880,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 25.0
+		"height": 24.0
 	},
 	"input":
 	{
@@ -845,7 +906,7 @@
 		"cols":
 		[
 			0.0,
-			0.492628992629,
+			0.52457002457,
 			1.0
 		],
 		"rows":
@@ -863,7 +924,7 @@
 	"project": "Korean_Jazz_DB.sublime-project",
 	"replace":
 	{
-		"height": 46.0
+		"height": 44.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -897,7 +958,7 @@
 	"settings":
 	{
 	},
-	"show_minimap": false,
+	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,

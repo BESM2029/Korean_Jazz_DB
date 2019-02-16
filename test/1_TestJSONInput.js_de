@@ -1,0 +1,265 @@
+const MG = require("@mhhwang2002/MongoGraph");
+const assert = require('chai').assert;
+//const AG = require('../AGraph');
+const MongoClient = require('mongodb').MongoClient ;
+const KJDB = require("../Korean_Jazz_DB").KJDB;
+const constructGraph = require("../Korean_Jazz_DB").constructGraph;
+
+const AG = require('AGraph');
+const JSON_data = require('../data/JSON_data'); 
+
+// exmaple: higher_key_name = 'name'
+//          multi_language_string_object = {en: "HOO KIM", kr: "김영후"}
+//          querry_object = {$and : [ { 'name.en' : "HOO KIM" }, { 'name.kr' : "김영후" }]}; 
+function get_querry_object(higher_key_name, multi_language_string_object, operatorStr) 
+{
+	let valueArray = [];
+	for(let key in multi_language_string_object) {
+		let object = {};
+		let hierarchical_key = higher_key_name + "." + key;
+		object[hierarchical_key]=multi_language_string_object[key];
+		valueArray.push(object);
+	}
+	// let querry_object = {'$and': valueArray};
+	let querry_object = {};
+	querry_object[operatorStr] = valueArray;
+	return querry_object;
+}
+
+describe('Test DB from JSON Data ', function(){
+ 	let db_artists="Test_JSON_Artists_DB";
+	let tbv_artists="artists";
+	let tbv_bands="bands";
+	let tbe_artist2band="artist2band";
+  let db_musics = "Test_JSON_Musics_DB";
+  let tbv_musics="musics";
+  let tbv_albums="albums";
+  let tbe_music2album="music2album";
+  let tbe_artists2music = "artists2music";
+  let tbe_album2band = "album2band";
+  let tbe_album2artist = "album2artist";
+
+    let db_url = 'mongodb://localhost:27017'; 
+
+	var _artists=[];
+
+    //let jsonStr = JSON.stringify(JSON_data);
+    //console.log(jsonStr);
+
+	it('Delete all DBs  ', async() => { 
+		try{
+			let client = await MongoClient.connect(db_url, { useNewUrlParser: true});
+			let gdb = new MG.Graph(client, {print_out:true});
+			gdb.begin_profiling("Main"); 
+				await gdb.clearDB(db_artists);
+				await gdb.clearDB(db_musics);
+	    	await client.close();  
+	    	//assert(0);
+			gdb.end_profiling();   
+		}
+		catch(err){
+			console.log(err); 
+			assert(0);
+		} 
+		finally{
+		}
+	});
+
+    let KJDBMngr = new KJDB.DBManager(db_url, "", "", "");
+ 	
+ // 	it('Open DB Connection" ', async() => {  
+	// 	//let KJDBMngr = new KJDB.DBManager(db_url, db_artists, tbv_artists, tbe_artists2matches);
+	//  	try{  
+	//  		let b_result = await KJDBMngr.open_DB_connection();
+	//  		assert(b_result);
+	//  	}
+	//  	catch(err){
+	//  		console.log(err); 
+	//  		assert(0);
+	//  	}  
+	// });
+
+async function create_album_contributions(album_contributions, album_doc) {
+	let results = await KJDBMngr.gdb.get(db_musics, tbv_albums, album_doc);
+  assert(results.length == 1);
+	let album_id = results[0]._id;
+	for (let key in album_contributions) {
+		let contributers_of_key = album_contributions[key];
+		for (let ci in contributers_of_key) {
+			let contributer = contributers_of_key[ci];
+			let search_cond = get_querry_object("name", contributer, '$and');
+			results = await KJDBMngr.gdb.get(db_artists, tbv_artists, search_cond);
+			if (results.length == 0) {
+				let missing_artist = {name: contributer};
+				await KJDBMngr.insert_artists(db_artists, tbv_artists, missing_artist);
+				results = await KJDBMngr.gdb.get(db_artists, tbv_artists, search_cond);
+			}
+			if (results.length > 0) {
+				let artist_doc = results[0];
+				let contribution = [key];
+				let Album2ArtistEdge = {_src: {db: db_musics, table: tbv_albums, _id: album_id}, _dst: {db: db_artists, table: tbv_artists, _id: artist_doc._id}, contributions: contribution};
+	      results = await KJDBMngr.gdb.insertEdge(db_musics, tbe_album2artist, Album2ArtistEdge);
+	      assert(results.ops.length == 1);
+			}
+		}
+	}
+	try {
+		let edge_table_list = [{db: db_musics, table: tbe_album2artist}];
+	  let AlbumBandInformation = await KJDBMngr.gdb.getOutEV(db_musics, tbv_albums, album_doc, edge_table_list);
+	  let G = constructGraph(AlbumBandInformation)
+	  console.log(G.printGraphStructure());
+	}
+	catch(err){
+  	console.log(err)
+  }
+  finally{
+  	console.log(JSON.stringify(album_contributions));
+  	console.log(JSON.stringify(album_doc));
+  }
+}
+
+
+
+
+
+async function create_bands(album_group, album_doc) {
+	// let album_doc = {title: album.title, release_date: album.release_date };
+  let results = await KJDBMngr.gdb.get(db_musics, tbv_albums, album_doc);
+  assert(results.length == 1);
+	let album_id = results[0]._id;
+
+	for (let ii in album_group) {
+		let agroup = album_group[ii];
+		let group_members = agroup.members;
+		// checking missing artists
+		for (let mi in group_members) {
+			let search_cond = get_querry_object("name", group_members[mi], '$and');
+		  results = await KJDBMngr.gdb.get(db_artists, tbv_artists, search_cond);
+		  if (results.length == 0) {
+				let member = {name:group_members[mi]};
+				results = await KJDBMngr.insert_artists(db_artists, tbv_artists, member);
+			}
+		}
+		// inserting missing artists
+	  // retrieving artists
+			let memberArray=[];
+		for (let mi in group_members) {
+	  	let search_cond = get_querry_object("name", group_members[mi], '$and');
+		  results = await KJDBMngr.gdb.get(db_artists, tbv_artists, search_cond);
+		  assert(results.length == 1);
+				memberArray.push(results[0]._id);
+		}
+		// creating a band
+		let Band = {name:agroup.name};
+		results = await KJDBMngr.insert_band(db_artists, tbv_bands, Band, tbv_artists, memberArray, tbe_artist2band);
+		assert(results.length == memberArray.length + 1); // 1 means the band itself.
+		// validating results
+		let search_condition = get_querry_object("name", agroup.name, '$and'); 
+	  let edge_table_list = [{db:db_artists, table:tbe_artist2band}];
+	  let BandMemberInformation = await KJDBMngr.gdb.getInEV(db_artists, tbv_bands, search_condition, edge_table_list);
+	  let G = constructGraph(BandMemberInformation)
+    console.log(G.printGraphStructure());
+
+		results = await KJDBMngr.gdb.get(db_artists, tbv_bands, Band);
+		assert(results.length == 1);
+		let band_id = results[0]._id;
+		let albumBandEdge = {_src:{db: db_musics, table: tbv_albums, _id: album_id}, _dst:{db: db_artists, table: tbv_bands, _id: band_id}};
+  	results = await KJDBMngr.gdb.insertEdge(db_musics, tbe_album2band, albumBandEdge);
+  	assert(results.ops.length == 1);
+
+	} // end of for (let ii in album_group)
+	// validating album band results
+  let edge_table_list = [{db: db_musics, table: tbe_album2band}];
+  let AlbumBandInformation = await KJDBMngr.gdb.getOutEV(db_musics, tbv_albums, album_doc, edge_table_list);
+  let G = constructGraph(AlbumBandInformation)
+  console.log(G.printGraphStructure());
+}; //end of function create_bands
+
+async function create_a_disk (disk) {
+	let tune_ids = [];
+	for (let ii in disk) {
+		let tune = disk[ii];
+		// checking if this tune exists.
+		let search_cond = get_querry_object("title", tune.title, '$and');
+		let results = await KJDBMngr.gdb.get(db_musics, tbv_musics, search_cond);
+		if (results.length == 0) {
+			let missing_tune = {title: tune.title, time: tune.time};
+			await KJDBMngr.insert_musics(db_musics, tbv_musics, missing_tune);
+			results = await KJDBMngr.gdb.get(db_musics, tbv_musics, search_cond);
+		}
+		if (results.length > 0) {
+			let tune_db = results[0];
+			tune_ids.push(tune_db._id);
+			if (tune.contributions) {
+				for (let key in tune.contributions) {
+					let contributers_of_key = tune.contributions[key];
+					for (let ci in contributers_of_key) {
+						let contributer = contributers_of_key[ci];
+						let search_cond = get_querry_object("name", contributer, '$and');
+						results = await KJDBMngr.gdb.get(db_artists, tbv_artists, search_cond);
+						if (results.length == 0) {
+							let missing_artist = {name: contributer};
+							await KJDBMngr.insert_artists(db_artists, tbv_artists, missing_artist);
+							results = await KJDBMngr.gdb.get(db_artists, tbv_artists, search_cond);
+						}
+						if (results.length > 0) {
+							let composer_db = results[0];
+							let contribution = [key];
+							let result = await KJDBMngr.insert_artist2music(db_artists, tbv_artists, composer_db._id, db_musics, tbv_musics, tune_db._id,
+	        		contribution, true, db_musics, tbe_artists2music);
+	     			  assert(result.length == 1);
+						}
+					}
+				}
+			}
+
+		}
+	} // end of for (let ii in album_group)
+	return tune_ids;
+}; //end of function create_bands
+
+// contributions
+
+	it('Create an album', async() => {
+		try {
+			 for ( let di in JSON_data) {
+ 		 		let b_result = await KJDBMngr.open_DB_connection();
+				let album = JSON_data[di];
+				let musicsArray2D=[];
+				for (let di in album.disks) {
+					let disk = album.disks[di];
+					let tune_id_array = await create_a_disk(disk);
+					musicsArray2D.push(tune_id_array);
+				}
+	      let album_doc = {title: album.title, release_date: album.release_date };
+	      let results = await KJDBMngr.insert_album(db_musics, tbv_albums, album_doc, tbv_musics, musicsArray2D, tbe_music2album);
+	      if (album.group ) { // group
+					await create_bands(album.group, album_doc);
+				}
+	      if (album.contributions ) { // group
+					await create_album_contributions(album.contributions, album_doc);
+				}
+	      // assert(results.length == musicsArray2D.length + 1); // number of disks + 1
+	      await KJDBMngr.close_DB_connection();
+    	 }
+		}
+		catch(err){
+			console.log(err); 
+			assert(0);
+		}
+	}); 
+ 
+	 
+	  
+	// it('Close DB Connection" ', async() => {
+	// 	//let KJDBMngr = new KJDB.DBManager(db_url, db_artists, tbv_artists, tbe_artists2matches);
+	//  	try{  
+	//  		let b_result = await KJDBMngr.close_DB_connection();
+	//  		assert(b_result);
+	//  	}
+	//  	catch(err){
+	//  		console.log(err); 
+	//  		assert(0);
+	//  	}  
+	//  }); 
+});

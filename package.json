@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --timeout 10000|| true ",
-    "only-test": "mocha --inspect-brk test/1_TestJSONInput.js"
+    "only-test": "mocha --inspect-brk test/2_testGetData.js"
   },
   "author": "",
   "license": "ISC",
