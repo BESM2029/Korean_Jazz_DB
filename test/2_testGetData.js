@@ -1,4 +1,4 @@
-const MG = require("@mhhwang2002/MongoGraph");
+const MG = require("@mhhwang2002/MongoGraph").MG;
 const assert = require('chai').assert;
 //const AG = require('../AGraph');
 const MongoClient = require('mongodb').MongoClient ;
@@ -26,97 +26,169 @@ describe('Test Get Data from DB', function(){
 
   let KJDBMngr = new KJDB.DBManager(db_url, "", "", "");
 
-
-
-  // it('Open DB Connection', async() => {  
-  //   //let KJDBMngr = new KJDB.DBManager(db_url, db_artists, tbv_artists, tbe_artists2matches);
-  //   try{  
-  //     let b_result = await KJDBMngr.open_DB_connection();
-  //     assert(b_result);
-  //   }
-  //   catch(err){
-  //     console.log(err); 
-  //     assert(0);
-  //   }  
-  // });
-
-  async function get_disk_graph (disk) {
-    let tune_ids = [];
-    for (let ii in disk) {
-      let tune = disk[ii];
-      // checking if this tune exists.
-      let search_cond = get_querry_object("title", tune.title, '$and');
-      let results = await KJDBMngr.gdb.get(db_musics, tbv_musics, search_cond);
-      if (results.length == 0) {
-        let missing_tune = {title: tune.title, time: tune.time};
-        await KJDBMngr.insert_musics(db_musics, tbv_musics, missing_tune);
-        results = await KJDBMngr.gdb.get(db_musics, tbv_musics, search_cond);
-      }
-      if (results.length > 0) {
-        let tune_db = results[0];
-        tune_ids.push(tune_db._id);
-        if (tune.contributions) {
-          for (let key in tune.contributions) {
-            let contributers_of_key = tune.contributions[key];
-            for (let ci in contributers_of_key) {
-              let contributer = contributers_of_key[ci];
-              let search_cond = get_querry_object("name", contributer, '$and');
-              results = await KJDBMngr.gdb.get(db_artists, tbv_artists, search_cond);
-              if (results.length == 0) {
-                let missing_artist = {name: contributer};
-                await KJDBMngr.insert_artists(db_artists, tbv_artists, missing_artist);
-                results = await KJDBMngr.gdb.get(db_artists, tbv_artists, search_cond);
-              }
-              if (results.length > 0) {
-                let composer_db = results[0];
-                let contribution = [key];
-                let result = await KJDBMngr.insert_artist2music(db_artists, tbv_artists, composer_db._id, db_musics, tbv_musics, tune_db._id,
-                contribution, true, db_musics, tbe_artists2music);
-                assert(result.length == 1);
-              }
-            }
-          }
+  async function getAlbumContributionsGraph(dbAlbum, jsonAlbum) {
+    try {
+      console.log("dbAlbum = " + JSON.stringify(dbAlbum));
+      let albumCdt = {};
+      for (let key in dbAlbum) {
+        if (key == "_id") {
+          console.log("dbAlbum." + key + " = " + JSON.stringify(dbAlbum[key]));
+          albumCdt[key] = dbAlbum[key];
+        }
+        else {
+          jsonAlbum[key] = dbAlbum[key];
         }
       }
-    } // end of for (let ii in album_group)
-    return tune_ids;
-  }; //end of function create_bands
+      console.log("albumCdt = " + JSON.stringify(albumCdt));
+      let edgeLocation = [{db: db_musics, table: tbe_album2artist}];
+      let contributionsInformation = await KJDBMngr.gdb.getOutEV(db_musics, tbv_albums, albumCdt, edgeLocation);
+      let G = constructGraph(contributionsInformation);
+      console.log(G.printGraphStructure());
+      let container = {};
+      let contributionS = G.getEdges();
+      for (let ci in contributionS) {
+        let contribution = contributionS[ci];
+        let contributor = G.getEdgeDestination(contribution);
+        console.log(JSON.stringify(contribution) + "==>" + JSON.stringify(contributor));
+        if (!container[contribution.contributions[0]]) {
+          container[contribution.contributions[0]] = [contributor.name];
+        }
+        else {
+          container[contribution.contributions[0]].push(contributor.name);
+        }
+      }
+      console.log("container = " + JSON.stringify(container));
+      jsonAlbum.contributions = container;
+    }
+    catch (err) {
+      console.log(err)
+    }
+    finally {
+      return jsonAlbum;
+    }
+  }
 
-  async function get_album_graph(db_album) {
+  function clearKeys(doc) {
+    delete doc["_id"]; // MG.ky_id];
+    delete doc["_db"]; // MG.ky_db];
+    delete doc["_collection"]; // MG.ky_cl];
+  }
 
-  try {
-    let edge_table_list = [{db: db_musics, table: tbe_album2artist}];
-    let album_doc = {};
-    for (let key in db_album) {
-      if (key == "title") {
-        album_doc[key] = db_album[key];
+  async function getGroupGraph(db_album, jsonAlbum) {
+    try {
+      console.log("db_album = " + JSON.stringify(db_album));
+      let album_doc = {};
+      for (let key in db_album) {
+        if (key == "_id") {
+          console.log("db_album." + key + " = " + JSON.stringify(db_album[key]));
+          album_doc[key] = db_album[key];
+        }
+      }
+      console.log("album_doc = " + JSON.stringify(album_doc));
+      let edgeLocation = [{db: db_musics, table: tbe_album2band}];
+      let groupInformation = await KJDBMngr.gdb.getOutEV(db_musics, tbv_albums, album_doc, edgeLocation, true);
+      let G = constructGraph(groupInformation);
+      console.log(G.printGraphStructure());
+      let groupContainer = [];
+      let groupEdgeS = G.getEdges();
+      for (let gi in groupEdgeS) {
+        let groupEdge = groupEdgeS[gi];
+        let group = G.getEdgeDestination(groupEdge);
+        console.log(JSON.stringify(groupEdge) + "==>" + JSON.stringify(group));
+        groupContainer[gi] = group;
+        // delete groupContainer[gi]._id;
+        groupContainer[gi].members = [];
+      }
+      let artist2band_edge_table_list = [{db: db_artists, table: tbe_artist2band}];
+      for (let gi in groupContainer) {
+        let group_doc_ext = groupContainer[gi];
+        console.log("group_doc_ext = " + JSON.stringify(group_doc_ext));
+        let cond = {_id: group_doc_ext._id};
+        clearKeys(group_doc_ext);
+        let groupMenberInformation = await KJDBMngr.gdb.getInEV(db_artists, tbv_bands, cond, artist2band_edge_table_list);
+        let H = constructGraph(groupMenberInformation);
+        console.log(H.printGraphStructure());
+        let memberEdgeS = H.getEdges();
+        for (let mi in memberEdgeS) {
+          let memberEdge = memberEdgeS[mi];
+          let member = H.getEdgeSource(memberEdge);
+          console.log(JSON.stringify(memberEdge) + "==>" + JSON.stringify(member));
+          clearKeys(member);
+          group_doc_ext.members.push(member.name);
+        }
+      }
+      jsonAlbum.group = groupContainer;
+    }
+    catch (err) {
+      console.log(err)
+    }
+    finally {
+      return jsonAlbum;
+    }
+  }
 
+  async function get_tunes_graph(db_album) {
+    try {
+      let album_doc = {};
+      for (let key in db_album) {
+        if (key == "_id") {
+          console.log("db_album." + key + " = " + JSON.stringify(db_album[key]));
+          album_doc[key] = db_album[key];
+        }
+      }
+      let edge_table_list = [{db: db_musics, table: tbe_music2album}];
+      let tunesInformation = await KJDBMngr.gdb.getInEV(db_musics, tbv_albums, album_doc, edge_table_list);
+      let G = constructGraph(tunesInformation)
+      console.log(G.printGraphStructure());
+      let tunes_docS = [];
+      for (let ii in tunesInformation) {
+        let element = tunesInformation[ii];
+        if (element.title) {
+          tunes_docS.push(element);
+        }
+      }
+      console.log("tunes_docS = " + JSON.stringify(tunes_docS));
+      let artist2tune_edge_table_list = [{db: db_musics, table: tbe_artists2music}];
+      for (let ti in tunes_docS) {
+        let tunes_doc = tunes_docS[ti];
+        console.log("tunes_doc = " + JSON.stringify(tunes_doc));
+        let tuneContributionsInformation = await KJDBMngr.gdb.getInEV(db_musics, tbv_musics, tunes_doc, artist2tune_edge_table_list);
+        let H = constructGraph(tuneContributionsInformation);
+        console.log(H.printGraphStructure());
       }
     }
-    let AlbumBandInformation = await KJDBMngr.gdb.getOutEV(db_musics, tbv_albums, album_doc, edge_table_list);
-    let G = constructGraph(AlbumBandInformation)
-    console.log(G.printGraphStructure());
-  }
-  catch(err){
-    console.log(err)
-  }
-  finally{
-    console.log(JSON.stringify(album_contributions));
-    console.log(JSON.stringify(album_doc));
+    catch (err) {
+      console.log(err)
+    }
+    finally {
+    }
   }
 
-  }
-//{db: db_musics, table: tbe_album2band}
+  it('Open DB Connection', async() => {  
+    //let KJDBMngr = new KJDB.DBManager(db_url, db_artists, tbv_artists, tbe_artists2matches);
+    try{  
+      let b_result = await KJDBMngr.open_DB_connection();
+      assert(b_result);
+    }
+    catch(err){
+      console.log(err); 
+      assert(0);
+    }  
+  });
 
   it('Get data from album table', async() => {
     try {
-      await KJDBMngr.open_DB_connection();
-      let db_albumS = await KJDBMngr.gdb.get(db_musics, tbv_albums);
-      await KJDBMngr.close_DB_connection();
-      console.log(JSON.stringify(db_albumS));
-      await KJDBMngr.open_DB_connection();
-      get_album_graph(db_albumS[0]);
-      await KJDBMngr.close_DB_connection();
+      let dbAlbumS = await KJDBMngr.gdb.get(db_musics, tbv_albums);
+      let jsonAlbumS = {}
+      // for (let ai in dbAlbumS) {
+        let jsonAlbum = {}
+        // let resultA = await getAlbumContributionsGraph(dbAlbumS[0], jsonAlbum);
+        // console.log("resultA = " + JSON.stringify(resultA));
+        let resultG = await getGroupGraph(dbAlbumS[0], jsonAlbum);
+        console.log("resultG = " + JSON.stringify(resultG));
+        // let resultT = await getTunesGraph(dbAlbumS[0], jsonAlbum);
+        // console.log("resultT = " + JSON.stringify(resultT));
+      // }
     }
     catch (err) {
       console.log(err); 
@@ -124,16 +196,16 @@ describe('Test Get Data from DB', function(){
     }
   });
 
-  // it('Close DB Connection', async() => {
-  //   //let KJDBMngr = new KJDB.DBManager(db_url, db_artists, tbv_artists, tbe_artists2matches);
-  //   try{  
-  //     let b_result = await KJDBMngr.close_DB_connection();
-  //     assert(b_result);
-  //   }
-  //   catch(err){
-  //     console.log(err); 
-  //     assert(0);
-  //   }  
-  //  }); 
+  it('Close DB Connection', async() => {
+    //let KJDBMngr = new KJDB.DBManager(db_url, db_artists, tbv_artists, tbe_artists2matches);
+    try{  
+      let b_result = await KJDBMngr.close_DB_connection();
+      assert(b_result);
+    }
+    catch(err){
+      console.log(err); 
+      assert(0);
+    }  
+   }); 
   
 });
